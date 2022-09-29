@@ -1,8 +1,14 @@
+using AFS.NET_Test.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddHttpClient<ITranslateService, TranslateService>(c =>
+{
+    c.BaseAddress = new Uri("https://shakespeare.p.rapidapi.com/shakespeare.json");
+    c.DefaultRequestHeaders.Add("Accept", "application/.json");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -2,14 +2,15 @@
 @using AFS.NET_Test.ViewModels
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model TranslateViewModel
+
 @{
     ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Shakespare Translator</h1>
-    <form asp-controller="Home" asp-action="Translate" method="post">
-        <input type="text" placeholder="Write your text" asp-for="input"/>
+    <form asp-controller="HomeController" asp-action="Translate" method="get">
+        <input type="text" placeholder="Write your text" asp-for="contents.text"/>
         <input type="submit" value="Submit"/>
     </form>
 </div>

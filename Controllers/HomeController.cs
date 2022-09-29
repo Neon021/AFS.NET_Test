@@ -1,29 +1,39 @@
-﻿using AFS.NET_Test.ViewModels;
+﻿using AFS.NET_Test.DataAccess;
+using AFS.NET_Test.Services;
+using AFS.NET_Test.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestSharp;
-using unirest_net.http;
+using System.Diagnostics;
 
 namespace AFS.NET_Test.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: HomeController
+        private CRUD_Record _cRUD;
+        private ITranslateService _translateService;
+
+        public HomeController(ITranslateService translateService, CRUD_Record cRUD)
+        {
+            _cRUD = cRUD;
+            _translateService = translateService;
+        }
         public ActionResult Index()
         {
             return View();  
         }
 
-        [HttpPost]
-        public ActionResult Translate(TranslateViewModel _viewModel)
+        public async Task<TranslateViewModel> Translate(TranslateViewModel vm)
         {
-            var request = new RestRequest($"{Method.Get}");
-            //request.AddParameter("text", translate.input);
-
-            var client = new RestClient($"https://api.funtranslations.com/translate/shakespeare.json?text={@_viewModel.input}");
-            var response = client.ExecuteGet(request);
-
-            return View(new TranslateViewModel { output = response.Content});
+            try
+            {
+                var result = await _translateService.Translate(vm);
+                return await Task.FromResult(result);
+            }
+            catch(Exception ex)
+            {
+                Results.Problem(ex.Message);
+                return new TranslateViewModel();
+            }
         }
     }
 }
