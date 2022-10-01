@@ -9,12 +9,10 @@ namespace AFS.NET_Test.Controllers
 {
     public class HomeController : Controller
     {
-        private CRUD_Record _cRUD;
-        private ITranslateService _translateService;
+        private readonly ITranslateService _translateService;
 
-        public HomeController(ITranslateService translateService, CRUD_Record cRUD)
+        public HomeController(ITranslateService translateService)
         {
-            _cRUD = cRUD;
             _translateService = translateService;
         }
         public ActionResult Index()
